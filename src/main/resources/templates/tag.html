@@ -24,6 +24,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/addproduct">Add product</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tag/add">Add product</a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -43,31 +46,13 @@
     <form method="post">
         <legend>Product settings</legend>
         <div class="mb-3">
-            <label for="inputTitle" class="form-label">Title</label>
-            <input type="text" class="form-control" id="inputTitle" aria-describedby="titleHelp" th:field="${mproduct.title}">
+            <label for="inputTitle" class="form-label">Name</label>
+            <input type="text" class="form-control" id="inputTitle" aria-describedby="titleHelp" th:field="${mtag.name}">
         </div>
         <div class="mb-3">
-            <label for="inputCode" class="form-label">Code</label>
-            <input type="text" class="form-control" id="inputCode" aria-describedby="codeHelp" th:field="${mproduct.code}">
+            <label for="inputCode" class="form-label">Slug</label>
+            <input type="text" class="form-control" id="inputCode" aria-describedby="codeHelp" th:field="${mtag.slug}">
         </div>
-        <div class="mb-3">
-            <label for="inputPrice" class="form-label">Price</label>
-            <input type="text" class="form-control" id="inputPrice" aria-describedby="priceHelp" th:field="${mproduct.price}">
-        </div>
-        <div class="mb-3">
-            <label for="inputQuantity" class="form-label">Quantity</label>
-            <input type="text" class="form-control" id="inputQuantity" aria-describedby="quantityHelp" th:field="${mproduct.quantity}">
-        </div>
-        <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Product description" id="floatingTextarea" style="height: 100px" th:field="${mproduct.text}"></textarea>
-            <label for="floatingTextarea">Text about product</label>
-        </div>
-
-        <legend>Auction settings</legend>
-        <label class="col-1 col-form-label">Duration</label>
-        <select class="form-select mb-3" aria-label="select" th:field="${mauction.duration}">
-            <option th:each="day: ${#numbers.sequence(1, 10)}" th:value="${day}" th:text="${day}"></option>
-        </select>
         <button type="submit" class="btn btn-sm btn-outline-primary">Add product</button>
     </form>
 </div>

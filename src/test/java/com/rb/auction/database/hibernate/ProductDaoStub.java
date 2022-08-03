@@ -13,8 +13,13 @@ public class ProductDaoStub implements InterfaceProductDao {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public List<Product> getByName(String productName) {
+        return null;
+    }
 
+    @Override
+    public int addProduct(Product product) {
+        return 0;
     }
 
     @Override

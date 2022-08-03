@@ -1,6 +1,8 @@
 package com.rb.auction.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "products")
 public class Product {
@@ -13,21 +15,40 @@ public class Product {
     private String text;
     private double price;
     private int quantity;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "products_tags",
+            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
+    )
+    private Set<Tag> tags = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "auction_id", referencedColumnName = "id")
+    private Auction auction;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Product(int id, String title, String code, String text, double price, int quantity, User user) {
+    public Product(int id, String title, String code, String text, double price, int quantity, Auction auction, User user) {
         this.id = id;
         this.title = title;
         this.code = code;
         this.text = text;
         this.price = price;
         this.quantity = quantity;
+        this.auction = auction;
         this.user = user;
     }
 
     public Product() {
-        
+
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
     }
 
     public User getUser() {
@@ -84,5 +105,19 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", code='" + code + '\'' +
+                ", text='" + text + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", auction=" + auction +
+                ", user=" + user +
+                '}';
     }
 }

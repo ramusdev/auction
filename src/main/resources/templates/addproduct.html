@@ -9,45 +9,68 @@
 </head>
 <body>
 <div class="container">
-    <div class="head border-bottom mb-3 pb-3 py-3">
-        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-explicit-fill" viewBox="0 0 16 16">
-                <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
-            </svg>
-            <span class="fs-3">Estore</span>
-        </a>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-3 mt-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-explicit-fill" viewBox="0 0 16 16">
+                    <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
+                </svg>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Main</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addproduct">Add product</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
+                            <div th:if="${msession}" th:inline="text" class="login-name">Hello, [[${msession.user.name}]]</div>
+                            <button th:unless="${msession}" class="btn btn-outline-primary" type="submit">Login</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <form method="post">
-        <legend>Add product form</legend>
+        <legend>Product settings</legend>
         <div class="mb-3">
             <label for="inputTitle" class="form-label">Title</label>
-            <input type="text" class="form-control" id="inputTitle" aria-describedby="titleHelp" th:field="${rproduct.title}">
-            <div id="titleHelp" class="form-text">Product title</div>
+            <input type="text" class="form-control" id="inputTitle" aria-describedby="titleHelp" th:field="${mproduct.title}">
         </div>
         <div class="mb-3">
             <label for="inputCode" class="form-label">Code</label>
-            <input type="text" class="form-control" id="inputCode" aria-describedby="codeHelp" th:field="${rproduct.code}">
-            <div id="codeHelp" class="form-text">Product code</div>
+            <input type="text" class="form-control" id="inputCode" aria-describedby="codeHelp" th:field="${mproduct.code}">
         </div>
         <div class="mb-3">
             <label for="inputPrice" class="form-label">Price</label>
-            <input type="text" class="form-control" id="inputPrice" aria-describedby="priceHelp" th:field="${rproduct.price}">
-            <div id="priceHelp" class="form-text">Product price</div>
+            <input type="text" class="form-control" id="inputPrice" aria-describedby="priceHelp" th:field="${mproduct.price}">
         </div>
         <div class="mb-3">
             <label for="inputQuantity" class="form-label">Quantity</label>
-            <input type="text" class="form-control" id="inputQuantity" aria-describedby="quantityHelp" th:field="${rproduct.quantity}">
-            <div id="quantityHelp" class="form-text">Product quantity</div>
+            <input type="text" class="form-control" id="inputQuantity" aria-describedby="quantityHelp" th:field="${mproduct.quantity}">
         </div>
         <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Product description" id="floatingTextarea" style="height: 100px" th:field="${rproduct.text}"></textarea>
+            <textarea class="form-control" placeholder="Product description" id="floatingTextarea" style="height: 100px" th:field="${mproduct.text}"></textarea>
             <label for="floatingTextarea">Text about product</label>
         </div>
+
+        <legend>Auction settings</legend>
+        <label class="col-1 col-form-label">Duration</label>
+        <select class="form-select mb-3" aria-label="select" th:field="${mauction.duration}">
+            <option th:each="day: ${#numbers.sequence(1, 10)}" th:value="${day}" th:text="${day}"></option>
+        </select>
         <button type="submit" class="btn btn-sm btn-outline-primary">Add product</button>
     </form>
 </div>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

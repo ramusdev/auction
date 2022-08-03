@@ -26,12 +26,20 @@ public class AuctionView extends Auction {
         Auction auction = new Auction();
         auction.setAuctionBets(this.getAuctionBets());
         auction.setStatus(this.getStatus());
-        auction.setProduct(this.getProduct());
+        // auction.setProduct(this.getProduct());
         auction.setStartDate(this.getStartDate());
         auction.setEndDate(this.getEndDate());
         auction.setId(this.getId());
-        auction.setUser(this.getUser());
+        // auction.setUser(this.getUser());
 
         return auction;
+    }
+
+    @Override
+    public String toString() {
+        return "AuctionView{" +
+                "productId=" + productId +
+                ", duration=" + duration +
+                '}';
     }
 }

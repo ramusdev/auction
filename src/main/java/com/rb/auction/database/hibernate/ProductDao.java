@@ -1,6 +1,7 @@
 package com.rb.auction.database.hibernate;
 
 import com.rb.auction.database.InterfaceProductDao;
+import com.rb.auction.model.Auction;
 import com.rb.auction.model.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,8 +29,25 @@ public class ProductDao implements InterfaceProductDao {
         Query<Product> query = session.createQuery("FROM com.rb.auction.model.Product");
 
         try {
-            List<Product> books = query.getResultList();
-            return books;
+            List<Product> products = query.getResultList();
+            return products;
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public List<Product> getByName(String productName) {
+        Session session = this.sessionFactory.openSession();
+
+        Query<Product> query = session.createQuery("FROM com.rb.auction.model.Product WHERE title LIKE :productName");
+        query.setParameter("productName", '%' + productName + '%');
+
+        try {
+            return query.getResultList();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
@@ -56,14 +75,15 @@ public class ProductDao implements InterfaceProductDao {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public int addProduct(Product product) {
         Session session = sessionFactory.openSession();
 
+        int postId = 0;
         Transaction transaction = null;
         transaction = session.beginTransaction();
 
         try {
-            session.save(product);
+            postId = (int) session.save(product);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -73,6 +93,8 @@ public class ProductDao implements InterfaceProductDao {
         } finally {
             session.close();
         }
+
+        return postId;
     }
 
     @Override

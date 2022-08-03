@@ -3,6 +3,7 @@ package com.rb.auction.controller;
 import com.rb.auction.model.view.RegisterUser;
 import com.rb.auction.service.InterfaceAuthenticationService;
 import com.rb.auction.session.SessionObject;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,23 +12,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Log4j2
 @Controller
 public class AuthenticationController {
-
     @Autowired
     InterfaceAuthenticationService interfaceAuthenticationService;
-
     @Autowired
     SessionObject sessionObject;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registerShow(Model model) {
-        model.addAttribute("ruser", new RegisterUser());
+        model.addAttribute("muser", new RegisterUser());
+
+        SessionObject sessionObject = null;
+        if (this.sessionObject.isLogged()) {
+            sessionObject = this.sessionObject;
+        }
+        model.addAttribute("msession", sessionObject);
+
         return "registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginShow() {
+    public String loginShow(Model model) {
+
+        SessionObject sessionObject = null;
+        if (this.sessionObject.isLogged()) {
+            sessionObject = this.sessionObject;
+        }
+
+        model.addAttribute("sessions", sessionObject);
+
         return "login";
     }
 
@@ -50,10 +65,6 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@ModelAttribute RegisterUser registerUser) {
-
-        // System.out.println("User name: ");
-        // System.out.println(registerUser.getName());
-
         this.interfaceAuthenticationService.register(registerUser);
 
         return "redirect:/main";

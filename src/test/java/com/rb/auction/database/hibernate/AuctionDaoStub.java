@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public class AuctionDaoStub implements InterfaceAuctionDao {
     @Override
-    public void add(Auction auction) {
-
+    public int add(Auction auction) {
+        return 1;
     }
 
     @Override
@@ -35,6 +35,11 @@ public class AuctionDaoStub implements InterfaceAuctionDao {
 
     @Override
     public List<Auction> getAll() {
+        return null;
+    }
+
+    @Override
+    public List<Auction> getByName(String searchKey) {
         return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.rb.auction.service;
 
+import com.rb.auction.model.Auction;
 import com.rb.auction.model.view.RegisterUser;
 
 public interface InterfaceAuthenticationService {

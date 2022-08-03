@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +22,14 @@ public class AuctionDao implements InterfaceAuctionDao {
     SessionFactory sessionFactory;
 
     @Override
-    public void add(Auction auction) {
+    public int add(Auction auction) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
+        int auctionId = 0;
         transaction = session.beginTransaction();
 
         try {
-            session.save(auction);
+            auctionId = (int) session.save(auction);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -37,6 +39,8 @@ public class AuctionDao implements InterfaceAuctionDao {
         } finally {
             session.close();
         }
+
+        return auctionId;
     }
 
 
@@ -111,6 +115,25 @@ public class AuctionDao implements InterfaceAuctionDao {
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public List<Auction> getByName(String searchKey) {
+        Session session = this.sessionFactory.openSession();
+
+        Query<Auction> query = session.createQuery("FROM com.rb.auction.model.Product WHERE title LIKE :searchKey");
+        query.setParameter("searchKey", searchKey);
+
+        List<Auction> auctions = new ArrayList<>();
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return auctions;
         } finally {
             session.close();
         }

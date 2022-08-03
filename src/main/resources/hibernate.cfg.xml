@@ -32,6 +32,7 @@
         <mapping class="com.rb.auction.model.Product"/>
         <mapping class="com.rb.auction.model.Auction"/>
         <mapping class="com.rb.auction.model.AuctionBet"/>
+        <mapping class="com.rb.auction.model.Tag"/>
 
     </session-factory>
 </hibernate-configuration>

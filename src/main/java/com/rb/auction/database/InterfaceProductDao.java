@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface InterfaceProductDao {
     List<Product> getProducts();
-    void addProduct(Product product);
+    List<Product> getByName(String productName);
+    int addProduct(Product product);
     Optional<Product> getProductById(int productId);
     void updateProduct(Product product);
     List<Product> getByUserId(int id);

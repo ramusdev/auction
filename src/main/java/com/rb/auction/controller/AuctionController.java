@@ -43,7 +43,7 @@ public class AuctionController {
         System.out.println("-----------------------------------------------------");
         System.out.println("Add auction");
 
-        this.interfaceAuctionService.addAuction(auctionView);
+        // this.interfaceAuctionService.addAuction(auctionView);
 
         return "redirect:/main";
     }
@@ -52,7 +52,6 @@ public class AuctionController {
     public String addAuctionShow(Model model) {
         User user = this.sessionObject.getUser();
         List<Product> products = this.interfaceProductService.getProductsByUserId(user.getId());
-
 
         model.addAttribute("rproducts", products);
         model.addAttribute("rauction", new AuctionView());
@@ -65,17 +64,23 @@ public class AuctionController {
         this.interfaceAuctionService.updateStatus(id);
 
         Auction auction = this.interfaceAuctionService.getAuctionById(id);
-        Product product = auction.getProduct();
+        // Product product = auction.getProduct();
         Set<AuctionBet> auctionBets = auction.getAuctionBets();
-        User user = auction.getUser();
+        // User user = auction.getUser();
 
         // this.interfaceAuctionService.sortByDate(auctionBets);
 
+        SessionObject sessionObject = null;
+        if (this.sessionObject.isLogged()) {
+            sessionObject = this.sessionObject;
+        }
+        model.addAttribute("sessions", sessionObject);
+
         model.addAttribute("rauction", auction);
-        model.addAttribute("rproduct", product);
+        // model.addAttribute("rproduct", product);
         model.addAttribute("rauctionbet", new AuctionBet());
         model.addAttribute("rauctionbets", auctionBets);
-        model.addAttribute("ruser", user);
+        // model.addAttribute("ruser", user);
 
         return "auction";
     }

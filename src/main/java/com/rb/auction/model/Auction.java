@@ -12,7 +12,6 @@ import java.util.TreeSet;
 
 @Entity(name = "auctions")
 public class Auction {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,21 +19,18 @@ public class Auction {
     private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "auction")
     private Product product;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private User user;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @SortComparator(SortByDate.class)
     private SortedSet<AuctionBet> auctionBets = new TreeSet<>();
 
-    public Auction(int id, LocalDateTime startDate, LocalDateTime endDate, Status status, Product product, User user, SortedSet<AuctionBet> auctionBets) {
+    public Auction(int id, LocalDateTime startDate, LocalDateTime endDate, Status status, Product product, SortedSet<AuctionBet> auctionBets) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
         this.product = product;
-        this.user = user;
         this.auctionBets = auctionBets;
     }
 
@@ -42,13 +38,12 @@ public class Auction {
 
     }
 
-
-    public User getUser() {
-        return user;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getId() {
@@ -83,14 +78,6 @@ public class Auction {
         this.status = status;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public SortedSet<AuctionBet> getAuctionBets() {
         return auctionBets;
     }
@@ -108,4 +95,15 @@ public class Auction {
         CLOSE
     }
 
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", status=" + status +
+                ", product=" + product +
+                ", auctionBets=" + auctionBets +
+                '}';
+    }
 }

@@ -17,19 +17,17 @@ import java.util.Set;
 
 @Service
 public class AuctionService implements InterfaceAuctionService {
-
     @Autowired
     InterfaceProductDao interfaceProductDao;
-
     @Autowired
     InterfaceAuctionDao interfaceAuctionDao;
-
     @Autowired
     SessionObject sessionObject;
 
+    /*
     @Override
-    public void addAuction(AuctionView auctionView) {
-        Optional<Product> productOptional = this.interfaceProductDao.getProductById(auctionView.getProductId());
+    public void addAuction(AuctionView auctionView, int productId) {
+        Optional<Product> productOptional = this.interfaceProductDao.getProductById(productId);
 
         if (productOptional.isEmpty()) {
             return;
@@ -43,15 +41,42 @@ public class AuctionService implements InterfaceAuctionService {
 
         auction.setStartDate(startDay);
         auction.setEndDate(endDay);
-        auction.setProduct(product);
-        auction.setUser(sessionObject.getUser());
+        // auction.setProduct(product);
+        // auction.setUser(sessionObject.getUser());
         auction.setStatus(Auction.Status.OPEN);
 
         this.interfaceAuctionDao.add(auction);
     }
+    */
 
     public List<Auction> getAll() {
         return this.interfaceAuctionDao.getAll();
+    }
+
+    @Override
+    public List<Auction> getByName(String searchKey) {
+        List<Auction> auctions = this.interfaceAuctionDao.getByName(searchKey);
+        return auctions;
+    }
+
+    @Override
+    public int addAuction(AuctionView auctionView) {
+        // Optional<Product> productOptional = this.interfaceProductDao.getProductById(productId);
+        // if (productOptional.isEmpty()) {
+            // return;
+        // }
+        // Product product = productOptional.get();
+
+        Auction auction = auctionView.parentCopy();
+
+        LocalDateTime startDay = LocalDateTime.now();
+        LocalDateTime endDay = startDay.plusDays(auctionView.getDuration());
+
+        auction.setStartDate(startDay);
+        auction.setEndDate(endDay);
+        auction.setStatus(Auction.Status.OPEN);
+
+        return this.interfaceAuctionDao.add(auction);
     }
 
     @Override
@@ -78,7 +103,8 @@ public class AuctionService implements InterfaceAuctionService {
             return;
         }
 
-        double maxBetPrice = auction.getProduct().getPrice();
+        // double maxBetPrice = auction.getProduct().getPrice();
+        double maxBetPrice = 10;
         Set<AuctionBet> auctionBets = auction.getAuctionBets();
 
         for (AuctionBet auctionBetItem : auctionBets) {
