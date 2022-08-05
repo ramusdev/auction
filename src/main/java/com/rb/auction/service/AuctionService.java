@@ -60,7 +60,7 @@ public class AuctionService implements InterfaceAuctionService {
     }
 
     @Override
-    public int addAuction(AuctionView auctionView) {
+    public Auction addAuction(AuctionView auctionView) {
         // Optional<Product> productOptional = this.interfaceProductDao.getProductById(productId);
         // if (productOptional.isEmpty()) {
             // return;
@@ -76,7 +76,10 @@ public class AuctionService implements InterfaceAuctionService {
         auction.setEndDate(endDay);
         auction.setStatus(Auction.Status.OPEN);
 
-        return this.interfaceAuctionDao.add(auction);
+        int auctionId = this.interfaceAuctionDao.add(auction);
+        auction.setId(auctionId);
+
+        return auction;
     }
 
     @Override

@@ -4,14 +4,19 @@ import com.rb.auction.database.InterfaceAuctionDao;
 import com.rb.auction.database.InterfaceProductDao;
 import com.rb.auction.model.Auction;
 import com.rb.auction.model.Product;
+import com.rb.auction.model.Tag;
 import com.rb.auction.model.User;
+import com.rb.auction.model.view.AuctionView;
+import com.rb.auction.model.view.TagView;
 import com.rb.auction.session.SessionObject;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -22,6 +27,8 @@ public class ProductService implements InterfaceProductService {
     SessionObject sessionObject;
     @Autowired
     InterfaceAuctionService auctionService;
+    @Autowired
+    InterfaceTagService tagService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -65,5 +72,31 @@ public class ProductService implements InterfaceProductService {
     @Override
     public List<Product> getProductsByUserId(int id) {
         return this.interfaceProductDao.getByUserId(id);
+    }
+
+    @Override
+    public void addProductAuctionTags(Product product, AuctionView auctionView, TagView tagView) {
+        String[] tagSlugs = tagView.getTagField();
+
+        List<Tag> tags = Arrays.stream(tagSlugs).map(e -> {
+            Optional<Tag> tag = this.tagService.getBySlug(e);
+            return tag.get();
+        }).collect(Collectors.toList());
+
+        User user = this.sessionObject.getUser();
+        product.setUser(user);
+
+        Auction auction = this.auctionService.addAuction(auctionView);
+
+        // this.interfaceProductDao.addProduct(product);
+        product.getTags().addAll(tags);
+        product.setAuction(auction);
+        // this.interfaceProductDao.updateProduct(product);
+        this.interfaceProductDao.addProduct(product);
+
+
+
+
+
     }
 }

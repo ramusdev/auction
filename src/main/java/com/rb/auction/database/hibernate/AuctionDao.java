@@ -26,9 +26,9 @@ public class AuctionDao implements InterfaceAuctionDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         int auctionId = 0;
-        transaction = session.beginTransaction();
 
         try {
+            transaction = session.beginTransaction();
             auctionId = (int) session.save(auction);
             transaction.commit();
         } catch (Exception e) {

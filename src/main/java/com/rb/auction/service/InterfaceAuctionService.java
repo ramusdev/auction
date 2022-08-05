@@ -13,5 +13,5 @@ public interface InterfaceAuctionService {
     void updateStatus(int id);
     List<Auction> getAll();
     List<Auction> getByName(String searchKey);
-    int addAuction(AuctionView auction);
+    Auction addAuction(AuctionView auction);
 }

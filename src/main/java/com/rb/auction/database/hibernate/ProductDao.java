@@ -80,11 +80,12 @@ public class ProductDao implements InterfaceProductDao {
 
         int postId = 0;
         Transaction transaction = null;
-        transaction = session.beginTransaction();
 
         try {
+            transaction = session.beginTransaction();
             postId = (int) session.save(product);
             transaction.commit();
+            product.setId(postId);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -118,9 +119,9 @@ public class ProductDao implements InterfaceProductDao {
     @Override
     public void updateProduct(Product product) {
         Transaction transaction = null;
+        Session session = this.sessionFactory.openSession();
 
         try {
-            Session session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.update(product);
             transaction.commit();
@@ -128,6 +129,8 @@ public class ProductDao implements InterfaceProductDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            session.close();
         }
 
     }
