@@ -72,10 +72,10 @@ public class AuctionDao implements InterfaceAuctionDao {
             session.update(auction);
             transaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
+            e.printStackTrace();
         } finally {
             session.close();
         }

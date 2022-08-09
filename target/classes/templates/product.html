@@ -5,81 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="/common.css">
-    <title>Hello, world!</title>
+    <title>Estore</title>
 </head>
 <body>
 <div class="container">
-    <div class="head border-bottom mb-3 pb-3 py-3">
-        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-explicit-fill" viewBox="0 0 16 16">
-                <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
-            </svg>
-            <span class="fs-3">Estore</span>
-        </a>
-    </div>
-    <div class="container mb-3">
-        <div class="row">
-            <div class="col">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h2 class="card-title" th:text="${rproduct.title}"></h2>
-                        <h6 class="card-subtitle mb-2" th:inline="text">Price: [[${rproduct.price}]] usd</h6>
-                        <h6 class="card-subtitle" th:inline="text">Code: [[${rproduct.code}]]</h6>
-                        <div class="card-text">
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title mb-2">Auction</h5>
-                        <div class="card-text">
-                            <form class="row g-2" method="post" th:action="@{/auction/addauction}">
-                                <div class="col-auto">
-                                    <input type="text" class="form-control" placeholder="starting price" th:field="${rproduct.price}">
-                                    <input type="hidden" class="form-control" placeholder="starting price" th:field="${rproduct.id}">
-                                </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-outline-primary">Add</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-3 mt-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-explicit-fill" viewBox="0 0 16 16">
+                    <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
+                </svg>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Main</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addproduct">Add product</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title mb-2">Auction information</h5>
-                        <div class="card-text">
-                            <form class="row g-2" method="post" th:action="@{/auction/addauction}">
-                                <div class="col-auto">
-                                    <input type="text" class="form-control" placeholder="starting price" th:field="${rproduct.price}">
-                                    <input type="hidden" class="form-control" placeholder="starting price" th:field="${rproduct.id}">
-                                </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-outline-primary">Add</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container-bid">
-                    <form class="row g-2" method="post" th:action="@{/auction/addbid/{id}(id=${rproduct.id})}">
-                        <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="your bid" th:field="${rauctionbid.price}">
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-outline-primary">Add bet</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col">
-                <legend>List of bet</legend>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+    <div class="row">
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${mproduct.title}"></h4>
+                    <p class="card-subtitle mb-2" th:inline="text">Start price: $[[${mproduct.price}]]</p>
+                    <p class="card-subtitle mb-2" th:inline="text">Code: [[${mproduct.code}]]</p>
+                    <div class="card-subtitle mb-2">Tags: <span th:each="tag: ${mtag}" th:inline="text">[[${tag.name}]] </span></div>
+                    <div class="card-text" th:text="${mproduct.text}"></div>
+                </div>
+            </div>
+            <div class="container-bid">
+                <form class="row g-2" method="post" th:action="@{/auction/addbet/{id}(id=${mauction.id})}">
+                    <div class="col-auto">
+                        <input type="text" class="form-control" th:field="${mauctionfield.price}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-primary">Add bet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            <h4>Auction information</h4>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-subtitle mb-2" th:inline="text">Start date: [[${#temporals.format(mauction.startDate, 'dd.MM.yy HH:mm')}]]</p>
+                    <p class="card-subtitle mb-2" th:inline="text">End date: [[${#temporals.format(mauction.endDate, 'dd.MM.yy HH:mm')}]]</p>
+                    <p class="card-subtitle mb-2" th:inline="text">Owner: [[${muser.name}]] [[${muser.surname}]]</p>
+                    <p class="card-subtitle">Status: <span class="text-primary" th:text="${#strings.toLowerCase(mauction.status)}"></span></p>
+                </div>
+            </div>
+            <h4>List of bets</h4>
+            <ol class="list-group list-group-numbered">
 
-
+            </ol>
+        </div>
     </div>
 </div>
 

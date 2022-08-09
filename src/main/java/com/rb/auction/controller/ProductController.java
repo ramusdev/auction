@@ -1,9 +1,6 @@
 package com.rb.auction.controller;
 
-import com.rb.auction.model.Auction;
-import com.rb.auction.model.AuctionBet;
-import com.rb.auction.model.Product;
-import com.rb.auction.model.Tag;
+import com.rb.auction.model.*;
 import com.rb.auction.model.view.AuctionView;
 import com.rb.auction.model.view.TagView;
 import com.rb.auction.service.*;
@@ -66,8 +63,10 @@ public class ProductController {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     public String productShow(@PathVariable int id, Model model) {
 
-        Product product = this.productService.getProductById(id);
+        Product product = this.productService.getById(id);
         Auction auction = product.getAuction();
+        Set<Tag> tags = product.getTags();
+        User user = product.getUser();
 
         SessionObject sessionObject = null;
         if (this.sessionObject.isLogged()) {
@@ -77,20 +76,15 @@ public class ProductController {
         model.addAttribute("msessions", sessionObject);
         model.addAttribute("mproduct", product);
         model.addAttribute("mauction", auction);
+        model.addAttribute("mtag", tags);
+        model.addAttribute("muser", user);
+        model.addAttribute("mauctionfield", new AuctionBet());
 
+        // model.addAttribute("mauction", auction);
+        // this.interfaceAuctionService.updateStatus(id);
+        // Set<AuctionBet> auctionBets = auction.getAuctionBets();
+        // model.addAttribute("rauctionbets", auctionBets);
 
-
-
-
-
-        /*
-        this.interfaceAuctionService.updateStatus(id);
-        Set<AuctionBet> auctionBets = auction.getAuctionBets();
-
-        model.addAttribute("rauction", auction);
-        model.addAttribute("rauctionbet", new AuctionBet());
-        model.addAttribute("rauctionbets", auctionBets);
-        */
 
         return "product";
     }

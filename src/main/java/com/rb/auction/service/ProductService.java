@@ -43,7 +43,7 @@ public class ProductService implements InterfaceProductService {
     @Override
     public int addProduct(Product product, int auctionId) {
         User user = this.sessionObject.getUser();
-        Auction auction = this.auctionService.getAuctionById(auctionId);
+        Auction auction = this.auctionService.getById(auctionId);
 
         product.setUser(user);
         product.setAuction(auction);
@@ -54,7 +54,7 @@ public class ProductService implements InterfaceProductService {
     }
 
     @Override
-    public Product getProductById(int productId) {
+    public Product getById(int productId) {
         Optional<Product> productOptional = interfaceProductDao.getProductById(productId);
 
         if (productOptional.isEmpty()) {

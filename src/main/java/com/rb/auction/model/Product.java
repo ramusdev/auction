@@ -1,8 +1,13 @@
 package com.rb.auction.model;
 
+import com.rb.auction.sorter.SortByAlphabet;
+import org.hibernate.annotations.SortComparator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity(name = "products")
 public class Product {
@@ -20,7 +25,8 @@ public class Product {
             joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
     )
-    private Set<Tag> tags = new HashSet<>();
+    @SortComparator(SortByAlphabet.class)
+    private SortedSet<Tag> tags = new TreeSet<Tag>();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "auction_id", referencedColumnName = "id")
     private Auction auction;
@@ -47,7 +53,7 @@ public class Product {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(TreeSet<Tag> tags) {
         this.tags = tags;
     }
 

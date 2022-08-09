@@ -32,10 +32,11 @@ public class AuctionController {
     SessionObject sessionObject;
 
     @RequestMapping(value = "/auction/addbet/{id}", method = RequestMethod.POST)
-    public String addBid(@ModelAttribute AuctionBet auctionBet, @PathVariable int id) {
+    public String addBet(@ModelAttribute AuctionBet auctionBet, @PathVariable int id) {
         this.interfaceAuctionService.addBetToAuction(id, auctionBet);
 
-        return "redirect:/auction/{id}";
+        // return "redirect:/product/{id}";
+        return "redirect:/main";
     }
 
     @RequestMapping(value = "/auction/addauction", method = RequestMethod.POST)
@@ -63,7 +64,7 @@ public class AuctionController {
     public String auctionShow(@PathVariable int id, Model model) {
         this.interfaceAuctionService.updateStatus(id);
 
-        Auction auction = this.interfaceAuctionService.getAuctionById(id);
+        Auction auction = this.interfaceAuctionService.getById(id);
         // Product product = auction.getProduct();
         Set<AuctionBet> auctionBets = auction.getAuctionBets();
         // User user = auction.getUser();

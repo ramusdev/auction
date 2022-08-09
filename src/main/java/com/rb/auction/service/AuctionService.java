@@ -7,6 +7,7 @@ import com.rb.auction.model.AuctionBet;
 import com.rb.auction.model.Product;
 import com.rb.auction.model.view.AuctionView;
 import com.rb.auction.session.SessionObject;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Log4j2
 @Service
 public class AuctionService implements InterfaceAuctionService {
     @Autowired
-    InterfaceProductDao interfaceProductDao;
+    InterfaceAuctionService auctionService;
     @Autowired
-    InterfaceAuctionDao interfaceAuctionDao;
+    InterfaceAuctionDao auctionDao;
     @Autowired
     SessionObject sessionObject;
+    @Autowired
+    InterfaceBetService betService;
 
     /*
     @Override
@@ -50,12 +54,12 @@ public class AuctionService implements InterfaceAuctionService {
     */
 
     public List<Auction> getAll() {
-        return this.interfaceAuctionDao.getAll();
+        return this.auctionDao.getAll();
     }
 
     @Override
     public List<Auction> getByName(String searchKey) {
-        List<Auction> auctions = this.interfaceAuctionDao.getByName(searchKey);
+        List<Auction> auctions = this.auctionDao.getByName(searchKey);
         return auctions;
     }
 
@@ -76,15 +80,20 @@ public class AuctionService implements InterfaceAuctionService {
         auction.setEndDate(endDay);
         auction.setStatus(Auction.Status.OPEN);
 
-        int auctionId = this.interfaceAuctionDao.add(auction);
+        int auctionId = this.auctionDao.add(auction);
         auction.setId(auctionId);
 
         return auction;
     }
 
     @Override
-    public Auction getAuctionById(int id) {
-        Optional<Auction> auctionOptional = interfaceAuctionDao.getById(id);
+    public void update(Auction auction) {
+        this.auctionDao.update(auction);
+    }
+
+    @Override
+    public Auction getById(int id) {
+        Optional<Auction> auctionOptional = auctionDao.getById(id);
 
         if (auctionOptional.isEmpty()) {
             return null;
@@ -95,20 +104,19 @@ public class AuctionService implements InterfaceAuctionService {
 
     @Override
     public void addBetToAuction(int auctionId, AuctionBet auctionBet) {
-        Optional<Auction> auctionOptional = interfaceAuctionDao.getById(auctionId);
+        Auction auction = this.getById(auctionId);
+        Set<AuctionBet> bets = auction.getAuctionBets();
 
-        if (auctionOptional.isEmpty()) {
-            return;
-        }
 
-        Auction auction = auctionOptional.get();
-        if (auction.getStatus().equals(Auction.Status.CLOSE)) {
-            return;
-        }
 
-        // double maxBetPrice = auction.getProduct().getPrice();
-        double maxBetPrice = 10;
+
+        // if (auction.getStatus().equals(Auction.Status.CLOSE)) {
+            // return;
+        // }
+
+        /*
         Set<AuctionBet> auctionBets = auction.getAuctionBets();
+        double maxBetPrice = auction.getProduct().getPrice();
 
         for (AuctionBet auctionBetItem : auctionBets) {
             if (auctionBetItem.getPrice() > maxBetPrice) {
@@ -119,18 +127,27 @@ public class AuctionService implements InterfaceAuctionService {
         if (maxBetPrice > auctionBet.getPrice()) {
             return;
         }
+        */
+
+
 
         auctionBet.setUser(this.sessionObject.getUser());
         auctionBet.setDate(LocalDateTime.now());
         auctionBet.setId(0);
-        auction.setAuctionBet(auctionBet);
+        auctionBet.setAuction(auction);
 
-        interfaceAuctionDao.update(auction);
+        auction.getAuctionBets().add(auctionBet);
+        this.auctionService.update(auction);
+
+
+
+        // this.betService.add(auctionBet);
+
     }
 
     @Override
     public void updateStatus(int id) {
-        Optional<Auction> auctionOptions = interfaceAuctionDao.getById(id);
+        Optional<Auction> auctionOptions = auctionDao.getById(id);
 
         if (auctionOptions.isEmpty()) {
             return;
@@ -144,7 +161,7 @@ public class AuctionService implements InterfaceAuctionService {
         LocalDateTime currentDate = LocalDateTime.now();
         if (currentDate.isAfter(auction.getEndDate())) {
             auction.setStatus(Auction.Status.CLOSE);
-            this.interfaceAuctionDao.update(auction);
+            this.auctionDao.update(auction);
         }
     }
 

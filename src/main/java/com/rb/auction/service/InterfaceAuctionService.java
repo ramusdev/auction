@@ -8,10 +8,11 @@ import com.rb.auction.model.view.AuctionView;
 import java.util.List;
 
 public interface InterfaceAuctionService {
-    Auction getAuctionById(int id);
+    Auction getById(int id);
     void addBetToAuction(int auctionId, AuctionBet auctionBet);
     void updateStatus(int id);
     List<Auction> getAll();
     List<Auction> getByName(String searchKey);
     Auction addAuction(AuctionView auction);
+    void update(Auction auction);
 }

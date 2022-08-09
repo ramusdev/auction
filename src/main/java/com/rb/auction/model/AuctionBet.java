@@ -3,7 +3,7 @@ package com.rb.auction.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "auction_bets")
+@Entity(name = "bets")
 public class AuctionBet {
 
     @Id
@@ -11,28 +11,41 @@ public class AuctionBet {
     private int id;
     private LocalDateTime date;
     private double price;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "auction_id", referencedColumnName = "id")
+    private Auction auction;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    public AuctionBet(int id, LocalDateTime date, double price, User user) {
+    public AuctionBet(int id, LocalDateTime date, double price, Auction auction, User user) {
         this.id = id;
         this.date = date;
         this.price = price;
+        this.auction = auction;
         this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "AuctionBid{" +
-                "id=" + id +
-                ", date=" + date +
-                ", price=" + price +
-                ", user=" + user +
-                '}';
     }
 
     public AuctionBet() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "AuctionBet{" +
+                "id=" + id +
+                ", date=" + date +
+                ", price=" + price +
+                ", auction=" + auction +
+                ", user=" + user +
+                '}';
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
     }
 
     public int getId() {

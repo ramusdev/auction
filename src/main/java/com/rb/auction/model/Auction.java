@@ -1,12 +1,10 @@
 package com.rb.auction.model;
 
-import com.rb.auction.sorter.SortByDate;
+import com.rb.auction.sorter.SortByPrice;
 import org.hibernate.annotations.SortComparator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -19,31 +17,20 @@ public class Auction {
     private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToOne(mappedBy = "auction")
-    private Product product;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @SortComparator(SortByDate.class)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "auction")
+    @SortComparator(SortByPrice.class)
     private SortedSet<AuctionBet> auctionBets = new TreeSet<>();
 
-    public Auction(int id, LocalDateTime startDate, LocalDateTime endDate, Status status, Product product, SortedSet<AuctionBet> auctionBets) {
+    public Auction(int id, LocalDateTime startDate, LocalDateTime endDate, Status status, SortedSet<AuctionBet> auctionBets) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.product = product;
         this.auctionBets = auctionBets;
     }
 
     public Auction() {
 
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public int getId() {
@@ -102,7 +89,6 @@ public class Auction {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status=" + status +
-                ", product=" + product +
                 ", auctionBets=" + auctionBets +
                 '}';
     }
