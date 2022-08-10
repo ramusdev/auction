@@ -12,6 +12,7 @@ public interface InterfaceAuctionService {
     void addBetToAuction(int auctionId, AuctionBet auctionBet);
     void updateStatus(int id);
     List<Auction> getAll();
+    List<Auction> getAllOpen();
     List<Auction> getByName(String searchKey);
     Auction addAuction(AuctionView auction);
     void update(Auction auction);

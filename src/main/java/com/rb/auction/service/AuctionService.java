@@ -58,6 +58,11 @@ public class AuctionService implements InterfaceAuctionService {
     }
 
     @Override
+    public List<Auction> getAllOpen() {
+        return this.auctionDao.getAllOpen();
+    }
+
+    @Override
     public List<Auction> getByName(String searchKey) {
         List<Auction> auctions = this.auctionDao.getByName(searchKey);
         return auctions;
@@ -107,9 +112,6 @@ public class AuctionService implements InterfaceAuctionService {
         Auction auction = this.getById(auctionId);
         Set<AuctionBet> bets = auction.getAuctionBets();
 
-
-
-
         // if (auction.getStatus().equals(Auction.Status.CLOSE)) {
             // return;
         // }
@@ -129,19 +131,13 @@ public class AuctionService implements InterfaceAuctionService {
         }
         */
 
-
-
         auctionBet.setUser(this.sessionObject.getUser());
         auctionBet.setDate(LocalDateTime.now());
         auctionBet.setId(0);
         auctionBet.setAuction(auction);
-
         auction.getAuctionBets().add(auctionBet);
+
         this.auctionService.update(auction);
-
-
-
-        // this.betService.add(auctionBet);
 
     }
 

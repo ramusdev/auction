@@ -121,6 +121,24 @@ public class AuctionDao implements InterfaceAuctionDao {
     }
 
     @Override
+    public List<Auction> getAllOpen() {
+        Session session = this.sessionFactory.openSession();
+        Query<Auction> query = session.createQuery("FROM com.rb.auction.model.Auction WHERE status = :status");
+        query.setParameter("status", Auction.Status.OPEN);
+
+        try {
+            List<Auction> auctions = query.getResultList();
+            return auctions;
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+        }
+
+    }
+
+    @Override
     public List<Auction> getByName(String searchKey) {
         Session session = this.sessionFactory.openSession();
 

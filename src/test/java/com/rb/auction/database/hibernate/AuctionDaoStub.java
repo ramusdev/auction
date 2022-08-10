@@ -39,6 +39,11 @@ public class AuctionDaoStub implements InterfaceAuctionDao {
     }
 
     @Override
+    public List<Auction> getAllOpen() {
+        return null;
+    }
+
+    @Override
     public List<Auction> getByName(String searchKey) {
         return null;
     }

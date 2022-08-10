@@ -67,6 +67,7 @@ public class ProductController {
         Auction auction = product.getAuction();
         Set<Tag> tags = product.getTags();
         User user = product.getUser();
+        Set<AuctionBet> auctionBets = auction.getAuctionBets();
 
         SessionObject sessionObject = null;
         if (this.sessionObject.isLogged()) {
@@ -79,6 +80,7 @@ public class ProductController {
         model.addAttribute("mtag", tags);
         model.addAttribute("muser", user);
         model.addAttribute("mauctionfield", new AuctionBet());
+        model.addAttribute("mauctionbet", auctionBets);
 
         // model.addAttribute("mauction", auction);
         // this.interfaceAuctionService.updateStatus(id);

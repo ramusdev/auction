@@ -73,7 +73,14 @@
             </div>
             <h4>List of bets</h4>
             <ol class="list-group list-group-numbered">
-
+                <li href="#" class="list-group-item d-flex justify-content-between align-items-start" aria-current="true" th:each="bet: ${mauctionbet}">
+                    <div class="ms-2 me-auto">
+                        <h5 class="mb-1" th:inline="text">[[${bet.user.name}]] [[${bet.user.surname}]]</h5>
+                        <small th:text="${#temporals.format(bet.date, 'dd.MM.yy')}"></small>
+                        <small class="text-secondary" th:text="${#temporals.format(bet.date, 'HH:mm')}"></small>
+                    </div>
+                    <b><span class="text-secondary" th:inline="text">$[[${bet.price}]]</span></b>
+                </li>
             </ol>
         </div>
     </div>

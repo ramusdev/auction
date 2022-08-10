@@ -13,5 +13,6 @@ public interface InterfaceAuctionDao {
     int addBid(AuctionBet auctionBet);
     Optional<AuctionBet> getBidById(int id);
     List<Auction> getAll();
+    List<Auction> getAllOpen();
     List<Auction> getByName(String searchKey);
 }
