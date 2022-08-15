@@ -1,6 +1,8 @@
 package com.rb.auction.configuration;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,8 +46,20 @@ public class AppConfiguration implements WebMvcConfigurer {
         return null;
     }
 
+    /*
     @Bean
-    public SessionFactory sessionFactory() {
+    public org.hibernate.cfg.Configuration configurationHibernate() {
+        return new org.hibernate.cfg.Configuration()
+                .addClass()
+                .addClass()
+                .setProperty("hibernate.dialect")
+                .setProperty("hibernate.connection.datasource", )
+                .setProperty("hibernate.order_update", "true")
+    }
+    */
+
+    @Bean
+    public SessionFactory sessionFactory()  {
         return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
     }
 }

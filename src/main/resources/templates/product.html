@@ -50,16 +50,40 @@
                     <div class="card-text" th:text="${mproduct.text}"></div>
                 </div>
             </div>
-            <div class="container-bid">
+            <div class="container-bid mb-5">
                 <form class="row g-2" method="post" th:action="@{/auction/addbet/{id}(id=${mauction.id})}">
                     <div class="col-auto">
                         <input type="text" class="form-control" th:field="${mauctionfield.price}">
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-outline-primary">Add bet</button>
+                        <button type="submit" class="btn btn-outline-success">Add bet</button>
                     </div>
                 </form>
             </div>
+
+            <h4>Message with owner</h4>
+            <div class="row">
+                <div class="col user-tab">
+                    <ul class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action list-group-item-primary active" aria-current="true">Tommy</a>
+                        <a href="#" class="list-group-item list-group-item-action">Eddy</a>
+                        <a href="#" class="list-group-item list-group-item-action">Sonny</a>
+                        <a href="#" class="list-group-item list-group-item-action">Jim</a>
+                        <a href="#" class="list-group-item list-group-item-action">Kel</a>
+                    </ul>
+                </div>
+                <div class="col message-tab">
+                    <div class="message-field bg-border">
+                        <p class="message-item">Message one</p>
+                        <p class="message-item">Message two</p>
+                    </div>
+                    <form class="input-group" method="post">
+                        <input type="text" class="form-control field-message" id="submittextmessage" name="message">
+                        <button type="submit" class="btn btn-outline-success btnsubmit">Send</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
         <div class="col">
             <h4>Auction information</h4>
