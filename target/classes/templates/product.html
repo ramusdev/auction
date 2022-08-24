@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/style.css">
     <title>Estore</title>
 </head>
 <body>
@@ -63,7 +63,7 @@
 
             <h4>Message with owner</h4>
             <div class="row">
-                <div class="col user-tab">
+                <div class="col-4 user-tab">
                     <ul class="list-group">
                         <a href="#" class="list-group-item list-group-item-action list-group-item-primary active" aria-current="true">Tommy</a>
                         <a href="#" class="list-group-item list-group-item-action">Eddy</a>
@@ -72,13 +72,20 @@
                         <a href="#" class="list-group-item list-group-item-action">Kel</a>
                     </ul>
                 </div>
-                <div class="col message-tab">
-                    <div class="message-field bg-border">
-                        <p class="message-item">Message one</p>
-                        <p class="message-item">Message two</p>
+                <div class="col-8 message-tab">
+                    <div class="message-field bg-border" id="message-field">
+                        <div class="message-item">
+                            <p class="message-date">Tommy 01.01.2022</p>
+                            <span class="message-text">Message two text with a long message string two lines</span>
+                        </div>
+                        <div class="message-item">
+                            <p class="message-date">Kel 01.01.2022</p>
+                            <span class="message-text badge bg-success">Message two</span>
+                        </div>
                     </div>
                     <form class="input-group" method="post">
-                        <input type="text" class="form-control field-message" id="submittextmessage" name="message">
+                        <input type="text" class="form-control field-message" id="message" name="message">
+                        <input type="hidden" id="productid" th:field="${mproduct.id}">
                         <button type="submit" class="btn btn-outline-success btnsubmit">Send</button>
                     </form>
                 </div>
@@ -111,5 +118,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

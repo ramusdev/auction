@@ -31,6 +31,9 @@
         <mapping class="com.rb.auction.model.Auction"/>
         <mapping class="com.rb.auction.model.AuctionBet"/>
         <mapping class="com.rb.auction.model.Tag"/>
+        <mapping class="com.rb.auction.model.MessageChat"/>
+        <mapping class="com.rb.auction.model.MessageItem"/>
+        <mapping class="com.rb.auction.model.MessageParticipants"/>
 
     </session-factory>
 </hibernate-configuration>

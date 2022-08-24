@@ -1,7 +1,6 @@
 package com.rb.auction.database.hibernate;
 
 import com.rb.auction.database.InterfaceUserDao;
-import com.rb.auction.model.Product;
 import com.rb.auction.model.User;
 
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public class UserDao implements InterfaceUserDao {

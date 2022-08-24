@@ -5,7 +5,6 @@ import com.rb.auction.model.view.AuctionView;
 import com.rb.auction.model.view.TagView;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InterfaceProductService {
     List<Product> getAllProducts();

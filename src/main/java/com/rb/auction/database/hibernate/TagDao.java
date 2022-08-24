@@ -2,7 +2,6 @@ package com.rb.auction.database.hibernate;
 
 import com.rb.auction.database.InterfaceTagDao;
 import com.rb.auction.model.Tag;
-import com.rb.auction.session.SessionObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

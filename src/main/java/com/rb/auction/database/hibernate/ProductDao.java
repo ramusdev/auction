@@ -1,7 +1,6 @@
 package com.rb.auction.database.hibernate;
 
 import com.rb.auction.database.InterfaceProductDao;
-import com.rb.auction.model.Auction;
 import com.rb.auction.model.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public class ProductDao implements InterfaceProductDao {

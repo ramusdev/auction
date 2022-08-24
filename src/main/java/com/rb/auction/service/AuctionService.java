@@ -1,10 +1,8 @@
 package com.rb.auction.service;
 
 import com.rb.auction.database.InterfaceAuctionDao;
-import com.rb.auction.database.InterfaceProductDao;
 import com.rb.auction.model.Auction;
 import com.rb.auction.model.AuctionBet;
-import com.rb.auction.model.Product;
 import com.rb.auction.model.view.AuctionView;
 import com.rb.auction.session.SessionObject;
 import lombok.extern.log4j.Log4j2;
