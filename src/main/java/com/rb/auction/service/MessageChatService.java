@@ -5,6 +5,7 @@ import com.rb.auction.model.MessageChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,8 +30,8 @@ public class MessageChatService implements InterfaceMessageChatService {
     }
 
     @Override
-    public MessageChat getByProductAndUser(int productId, int userId) {
-        Optional<MessageChat> messageChatOptional = this.messageChatDao.getByProductAndUser(productId, userId);
+    public MessageChat getByProductAndUser(int productId, List<Integer> users) {
+        Optional<MessageChat> messageChatOptional = this.messageChatDao.getByProductAndUser(productId, users);
 
         if (messageChatOptional.isEmpty()) {
             return null;

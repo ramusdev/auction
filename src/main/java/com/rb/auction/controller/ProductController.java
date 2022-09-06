@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -27,6 +28,8 @@ public class ProductController {
     InterfaceTagService tagService;
     @Autowired
     InterfaceProductService productService;
+    @Autowired
+    InterfaceUserService userService;
 
     @RequestMapping(value = "/addproduct", method = RequestMethod.GET)
     public String productAddShow(Model model) {
@@ -61,6 +64,8 @@ public class ProductController {
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     public String productShow(@PathVariable int id, Model model) {
+        User currentUser = null;
+        // User currentUser = this.userService.getUserById(2);
 
         Product product = this.productService.getById(id);
         Auction auction = product.getAuction();
@@ -71,6 +76,7 @@ public class ProductController {
         SessionObject sessionObject = null;
         if (this.sessionObject.isLogged()) {
             sessionObject = this.sessionObject;
+            currentUser = sessionObject.getUser();
         }
 
         model.addAttribute("msessions", sessionObject);
@@ -78,14 +84,23 @@ public class ProductController {
         model.addAttribute("mauction", auction);
         model.addAttribute("mtag", tags);
         model.addAttribute("muser", user);
+        model.addAttribute("mcurrentuser", currentUser);
         model.addAttribute("mauctionfield", new AuctionBet());
         model.addAttribute("mauctionbet", auctionBets);
 
-        // model.addAttribute("mauction", auction);
-        // this.interfaceAuctionService.updateStatus(id);
-        // Set<AuctionBet> auctionBets = auction.getAuctionBets();
-        // model.addAttribute("rauctionbets", auctionBets);
-
+        User finalCurrentUser = currentUser;
+        List<User> users = auction.getAuctionBets().stream()
+                .filter(e -> {
+                    if (e.getUser().getId() != finalCurrentUser.getId()) {
+                        return true;
+                    }
+                    return false;
+                })
+                .map(e -> {
+                    return e.getUser();
+                })
+                .collect(Collectors.toList());
+        model.addAttribute("mchatuser", users);
 
         return "product";
     }

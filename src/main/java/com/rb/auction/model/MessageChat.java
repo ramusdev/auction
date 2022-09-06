@@ -1,5 +1,6 @@
 package com.rb.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.rb.auction.sorter.SortByDate;
 import org.hibernate.annotations.SortComparator;
 
@@ -17,9 +18,9 @@ public class MessageChat {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "participant_id", referencedColumnName = "id")
     private MessageParticipants messageParticipants;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    // @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @JoinColumn(name = "user_id", referencedColumnName = "id")
+    // private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
@@ -27,11 +28,11 @@ public class MessageChat {
     @SortComparator(SortByDate.class)
     private SortedSet<MessageItem> messageItems = new TreeSet<MessageItem>();
 
-    public MessageChat(int id, LocalDateTime date, MessageParticipants messageParticipants, User user, Product product, SortedSet<MessageItem> messageItems) {
+    // @JsonCreator
+    public MessageChat(int id, LocalDateTime date, MessageParticipants messageParticipants, Product product, SortedSet<MessageItem> messageItems) {
         this.id = id;
         this.date = date;
         this.messageParticipants = messageParticipants;
-        this.user = user;
         this.product = product;
         this.messageItems = messageItems;
     }
@@ -63,14 +64,6 @@ public class MessageChat {
         this.messageParticipants = messageParticipants;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Product getProduct() {
         return product;
     }
@@ -93,7 +86,6 @@ public class MessageChat {
                 "id=" + id +
                 ", date=" + date +
                 ", messageParticipants=" + messageParticipants +
-                ", user=" + user +
                 ", product=" + product +
                 ", messageItems=" + messageItems +
                 '}';

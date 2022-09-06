@@ -1,11 +1,14 @@
 package com.rb.auction.controller.rest;
 
+import com.rb.auction.exceptions.EntityDoNotExistsException;
 import com.rb.auction.model.*;
+import com.rb.auction.model.view.MessageChatView;
 import com.rb.auction.model.view.MessageItemView;
 import com.rb.auction.service.InterfaceMessageChatService;
 import com.rb.auction.service.InterfaceMessageItemService;
 import com.rb.auction.service.InterfaceProductService;
 import com.rb.auction.service.InterfaceUserService;
+import com.rb.auction.session.SessionObject;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Log4j2
@@ -26,31 +31,38 @@ public class MessageController {
     InterfaceMessageItemService messageItemService;
     @Autowired
     InterfaceProductService productService;
+    @Autowired
+    SessionObject sessionObject;
 
     @RequestMapping(value = "/rest/message/send", method = RequestMethod.POST)
     public void messageSend(@RequestBody MessageItemView messageItemView) {
-        int productId = messageItemView.getProduct();
-        int userId = 2;
+        User user = null;
+        if (this.sessionObject.isLogged()) {
+            user = this.sessionObject.getUser();
+        }
+
+        int productId = messageItemView.getProductId();
+        int userOneId = messageItemView.getUserId();
+        int userCurrentId = user.getId();
         String messageText = messageItemView.getText();
 
         MessageChat messageChat = null;
-
-        Product product = this.productService.getById(productId);
-        User userProduct = product.getUser();
-
-        User userCurrent = this.userService.getUserById(userId);
-        messageChat = this.messageChatService.getByProductAndUser(productId, userCurrent.getId());
+        List<Integer> users = Arrays.asList(userOneId, userCurrentId);
+        messageChat = this.messageChatService.getByProductAndUser(productId, users);
+        User userCurrent = this.userService.getUserById(userCurrentId);
 
         if (messageChat == null) {
+            User userOne = this.userService.getUserById(userOneId);
+            Product product = this.productService.getById(productId);
+
             MessageParticipants messageParticipants = new MessageParticipants();
-            messageParticipants.getUsers().add(userProduct);
+            messageParticipants.getUsers().add(userOne);
             messageParticipants.getUsers().add(userCurrent);
 
             messageChat = new MessageChat();
             messageChat.setDate(LocalDateTime.now());
             messageChat.setMessageParticipants(messageParticipants);
             messageChat.setProduct(product);
-            messageChat.setUser(userCurrent);
 
             this.messageChatService.add(messageChat);
         }
@@ -64,15 +76,24 @@ public class MessageController {
         this.messageItemService.add(messageItem);
     }
 
-    @RequestMapping(value = "/rest/message/get", method = RequestMethod.GET)
-    public Set<MessageItem> messageGet() {
-        int productId = 100;
-        int userId = 2;
+    @RequestMapping(value = "/rest/message/chattwo", method = RequestMethod.POST)
+    public Set<MessageItem> getChatByUserAndProduct(@RequestBody MessageChatView messageChatView) {
+        User user = null;
+        if (this.sessionObject.isLogged()) {
+            user = this.sessionObject.getUser();
+        }
 
-        MessageChat messageChat = this.messageChatService.getByProductAndUser(productId, userId);
-        Set<MessageItem> messageItems = messageChat.getMessageItems();
+        int productId = messageChatView.getPost();
+        int userIdOne = user.getId();
+        int userIdTwo = messageChatView.getUser();
 
-        // log.info("Message chat: {}", messageChat.getMessageItems());
-        return messageItems;
+        List<Integer> users = Arrays.asList(userIdOne, userIdTwo);
+        MessageChat messageChat = this.messageChatService.getByProductAndUser(productId, users);
+
+        if (messageChat != null) {
+            return messageChat.getMessageItems();
+        } else {
+            throw new EntityDoNotExistsException();
+        }
     }
 }

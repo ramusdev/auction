@@ -1,5 +1,6 @@
 package com.rb.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class MessageItem {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    // @JsonCreator
     public MessageItem(int id, LocalDateTime date, String text, MessageChat chat, User user) {
         this.id = id;
         this.date = date;

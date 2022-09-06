@@ -32,7 +32,8 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="/login">
-
+                            <div th:if="${msessions}" th:inline="text" class="login-name">Hello, [[${msessions.user.name}]]</div>
+                            <button th:unless="${msessions}" class="btn btn-outline-primary" type="submit">Login</button>
                         </a>
                     </li>
                 </ul>
@@ -65,25 +66,25 @@
             <div class="row">
                 <div class="col-4 user-tab">
                     <ul class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-primary active" aria-current="true">Tommy</a>
-                        <a href="#" class="list-group-item list-group-item-action">Eddy</a>
-                        <a href="#" class="list-group-item list-group-item-action">Sonny</a>
-                        <a href="#" class="list-group-item list-group-item-action">Jim</a>
-                        <a href="#" class="list-group-item list-group-item-action">Kel</a>
+                        <a th:each="user, iteration: ${mchatuser}" th:inline="text" th:userid="${user.id}" href="#" th:class="${iteration.index == 0} ? 'list-group-item list-group-item-action list-users list-group-item-primary active' : 'list-group-item list-group-item-action list-users'" aria-current="true">[[${user.name}]]</a>
                     </ul>
                 </div>
                 <div class="col-8 message-tab">
-                    <div class="message-field bg-border" id="message-field">
-                        <div class="message-item">
-                            <p class="message-date">Tommy 01.01.2022</p>
-                            <span class="message-text">Message two text with a long message string two lines</span>
+                    <div class="message-field bg-border" id="message-field" th:useridcurrent="${mcurrentuser.id}">
+                        <!--
+                        <div class="message-item ">
+                            <p class="message-user">Kel</p>
+                            <p class="message-date">01.01.2022</p>
+                            <span class="message-text">Message two text with a long message string two lines and</span>
                         </div>
                         <div class="message-item">
-                            <p class="message-date">Kel 01.01.2022</p>
-                            <span class="message-text badge bg-success">Message two</span>
+                            <p class="message-user">Kel</p>
+                            <p class="message-date">01.01.2022</p>
+                            <span class="message-text">Message two</span>
                         </div>
+                        -->
                     </div>
-                    <form class="input-group" method="post">
+                    <form class="input-group" method="post" id="submitform">
                         <input type="text" class="form-control field-message" id="message" name="message">
                         <input type="hidden" id="productid" th:field="${mproduct.id}">
                         <button type="submit" class="btn btn-outline-success btnsubmit">Send</button>
