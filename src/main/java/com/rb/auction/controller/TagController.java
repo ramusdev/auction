@@ -34,7 +34,7 @@ public class TagController {
 
     @RequestMapping(value = "/tag/add", method = RequestMethod.POST)
     public String addTag(@ModelAttribute Tag tag) {
-        tagService.add(tag);
+        this.tagService.add(tag);
 
         return "redirect:/main";
     }

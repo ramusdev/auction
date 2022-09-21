@@ -31,7 +31,7 @@ public class ProductController {
     @Autowired
     InterfaceUserService userService;
 
-    @RequestMapping(value = "/addproduct", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/add", method = RequestMethod.GET)
     public String productAddShow(Model model) {
         model.addAttribute("mproduct", new Product());
         model.addAttribute("mauction", new AuctionView());
@@ -48,7 +48,7 @@ public class ProductController {
         // return "redirect:/main";
     }
 
-    @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/product/add", method = RequestMethod.POST)
     public String productAdd(@ModelAttribute Product product, @ModelAttribute AuctionView auctionView, @ModelAttribute TagView tagView) {
         // int auctionId = auctionService.addAuction(auctionView);
         // productService.addProduct(product, auctionId);
