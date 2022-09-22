@@ -29,7 +29,11 @@ public class TagController {
         model.addAttribute("msession", sessionObject);
         model.addAttribute("mtag", new Tag());
 
-        return "tag";
+        if (this.sessionObject.isLogged()) {
+            return "tag";
+        }
+
+        return "no-login";
     }
 
     @RequestMapping(value = "/tag/add", method = RequestMethod.POST)

@@ -4,9 +4,7 @@ import com.rb.auction.sorter.SortByAlphabet;
 import org.hibernate.annotations.SortComparator;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Entity(name = "products")
 public class Product {
@@ -24,8 +22,9 @@ public class Product {
             joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
     )
-    @SortComparator(SortByAlphabet.class)
-    private SortedSet<Tag> tags = new TreeSet<Tag>();
+    // @SortComparator(SortByAlphabet.class)
+    // private SortedSet<Tag> tags = new TreeSet<Tag>();
+    private List<Tag> tags = new ArrayList();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "auction_id", referencedColumnName = "id")
     private Auction auction;
@@ -45,14 +44,20 @@ public class Product {
     }
 
     public Product() {
-
     }
 
-    public Set<Tag> getTags() {
+    public SortedSet<Tag> getSortedTags() {
+        SortedSet<Tag> sortedTags = new TreeSet<Tag>(new SortByAlphabet());
+        sortedTags.addAll(tags);
+
+        return sortedTags;
+    }
+
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(TreeSet<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 

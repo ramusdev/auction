@@ -89,12 +89,10 @@ public class ProductService implements InterfaceProductService {
 
         // this.interfaceProductDao.addProduct(product);
         product.getTags().addAll(tags);
+
         product.setAuction(auction);
         // this.interfaceProductDao.updateProduct(product);
         this.interfaceProductDao.addProduct(product);
-
-
-
 
 
     }

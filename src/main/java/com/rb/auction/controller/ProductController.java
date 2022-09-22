@@ -33,30 +33,28 @@ public class ProductController {
 
     @RequestMapping(value = "/product/add", method = RequestMethod.GET)
     public String productAddShow(Model model) {
+        SessionObject sessionObject = null;
+        if (this.sessionObject.isLogged()) {
+            sessionObject = this.sessionObject;
+        }
+
+        model.addAttribute("msession", sessionObject);
         model.addAttribute("mproduct", new Product());
         model.addAttribute("mauction", new AuctionView());
-        model.addAttribute("msession", this.sessionObject);
 
         List<Tag> tags = this.tagService.getAll();
         model.addAttribute("mtag", tags);
 
-        // log.info("Tags: {}", tags);
-        // if (this.sessionObject.isLogged()) {
-        return "addproduct";
-        // }
+        if (this.sessionObject.isLogged()) {
+            return "addproduct";
+        }
 
-        // return "redirect:/main";
+        return "no-login";
     }
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
     public String productAdd(@ModelAttribute Product product, @ModelAttribute AuctionView auctionView, @ModelAttribute TagView tagView) {
-        // int auctionId = auctionService.addAuction(auctionView);
-        // productService.addProduct(product, auctionId);
-
         // @RequestParam(value="tagField[]") String[] tagFields
-        // log.info("Tag: {}", Arrays.toString(tagFields));
-
-        // log.info("Tag: {}", tagView);
         this.productService.addProductAuctionTags(product, auctionView, tagView);
 
         return "redirect:/main";
@@ -64,12 +62,14 @@ public class ProductController {
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     public String productShow(@PathVariable int id, Model model) {
-        User currentUser = null;
-        // User currentUser = this.userService.getUserById(2);
+        if (! this.sessionObject.isLogged()) {
+            return "no-login";
+        }
 
+        User currentUser = null;
         Product product = this.productService.getById(id);
         Auction auction = product.getAuction();
-        Set<Tag> tags = product.getTags();
+        Set<Tag> tags = product.getSortedTags();
         User user = product.getUser();
         Set<AuctionBet> auctionBets = auction.getAuctionBets();
 

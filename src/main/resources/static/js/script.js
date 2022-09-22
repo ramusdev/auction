@@ -7,7 +7,7 @@ function sendMessage() {
     formSend.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        let listUsers = document.getElementsByClassName("list-users");
+        let listUsers = document.getElementsByClassName("users");
         let activeItem = listUsers.item(0);
         for (let i = 0; i < listUsers.length; i++) {
             if (listUsers.item(i).classList.contains("active")) {
@@ -72,7 +72,7 @@ function showMessages(messages) {
 
 function showSelectedChat() {
     // console.log("Show message");
-    let listUsers = document.getElementsByClassName("list-users");
+    let listUsers = document.getElementsByClassName("users");
     for (let i = 0; i < listUsers.length; i++) {
         listUsers.item(i).addEventListener("click", function() {
             // console.log("click event")
@@ -87,13 +87,13 @@ function showSelectedChat() {
 }
 
 function showSelectedItem(currentItem) {
-    let listUsers = document.getElementsByClassName("list-users");
+    let listUsers = document.getElementsByClassName("users");
     for (let i = 0; i < listUsers.length; i++) {
-        listUsers.item(i).classList.remove("list-group-item-primary");
+        listUsers.item(i).classList.remove("list-group-item-success");
         listUsers.item(i).classList.remove("active");
     }
 
-    currentItem.classList.add("list-group-item-primary");
+    currentItem.classList.add("list-group-item-success");
     currentItem.classList.add("active");
 }
 
@@ -121,7 +121,7 @@ function loadChatByUser(userId, productId) {
 }
 
 function showChatOnOpen() {
-    let listUsers = document.getElementsByClassName("list-users");
+    let listUsers = document.getElementsByClassName("users");
     let activeItem = listUsers.item(0);
     let userId = activeItem.getAttribute("userid");
     let productId = document.getElementById("productid").value;
