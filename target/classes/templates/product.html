@@ -119,6 +119,7 @@
                 <form class="row" method="post" th:action="@{/auction/addbet/{id}(id=${mauction.id})}">
                     <div class="col">
                         <input type="text" class="form-control" th:field="${mauctionfield.price}">
+                        <input type="hidden" name="postid" th:value="${mproduct.id}">
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-outline-success">Submit</button>
